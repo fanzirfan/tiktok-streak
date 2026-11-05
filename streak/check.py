@@ -79,7 +79,9 @@ def _subs(state: dict, stale_hours: float) -> dict:
     return {
         "username": cfg.TIKTOK_USERNAME,
         "hours": f"{stale_hours:.0f}",
+        "days": f"{stale_hours / 24:.0f}",
         "alert_hours": str(cfg.ALERT_AFTER_HOURS),
+        "alert_days": str(round(cfg.ALERT_AFTER_HOURS / 24)),
         "date_iso": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "profile_url": f"https://www.tiktok.com/@{cfg.TIKTOK_USERNAME}",
         "last_seen_iso": datetime.fromtimestamp(

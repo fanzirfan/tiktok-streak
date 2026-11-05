@@ -4,7 +4,7 @@ Halo,
 
 Kalau kamu menerima email ini, sistem pengingat otomatis milik @{username} baru saja terpicu.
 
-Artinya: akun TikTok @{username} tidak ada aktivitas repost selama {hours} jam terakhir
+Artinya: akun TikTok @{username} tidak ada aktivitas repost selama {days} hari
 (repost terakhir tercatat: {last_seen_iso} UTC). Sesuai kesepakatan, ini kemungkinan
 tanda bahwa sedang terjadi sesuatu dan kamu perlu memastikan semuanya baik-baik saja.
 

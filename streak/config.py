@@ -1,8 +1,8 @@
 """Konfigurasi streak dari environment variables.
 
-Nilai default threshold (jam):
-- 24h sejak repost terakhir -> reminder Telegram ke diri sendiri
-- 48h                       -> email SMTP ke orang ketiga
+Nilai default threshold:
+- 7 hari tanpa repost  -> reminder Telegram ke diri sendiri (tiap 1 hari)
+- 30 hari tanpa repost -> email SMTP ke orang ketiga (tiap 2 hari)
 """
 
 import os
@@ -24,10 +24,10 @@ TIKTOK_USERNAME = os.environ.get("TIKTOK_USERNAME", "").lstrip("@")
 STATE_FILE = os.environ.get("STATE_FILE", "state.json")
 
 # --- Threshold (jam) ------------------------------------------------------
-REMIND_AFTER_HOURS = _int("REMIND_AFTER_HOURS", 24)
-ALERT_AFTER_HOURS = _int("ALERT_AFTER_HOURS", 48)
-REMIND_EVERY_HOURS = _int("REMIND_EVERY_HOURS", 12)
-ALERT_EVERY_HOURS = _int("ALERT_EVERY_HOURS", 24)
+REMIND_AFTER_HOURS = _int("REMIND_AFTER_HOURS", 24 * 7)    # 7 hari  -> reminder
+ALERT_AFTER_HOURS = _int("ALERT_AFTER_HOURS", 24 * 30)     # 30 hari -> email
+REMIND_EVERY_HOURS = _int("REMIND_EVERY_HOURS", 24)        # reminder ulang tiap 1 hari
+ALERT_EVERY_HOURS = _int("ALERT_EVERY_HOURS", 24 * 2)      # email ulang tiap 2 hari
 # Scrape gagal berapa kali berturut sebelum dianggap "monitor blind"
 SCRAPE_FAIL_LIMIT = _int("SCRAPE_FAIL_LIMIT", 8)
 BLIND_WARN_EVERY_HOURS = _int("BLIND_WARN_EVERY_HOURS", 24)

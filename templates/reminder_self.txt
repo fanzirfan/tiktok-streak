@@ -1,7 +1,7 @@
-⏰ Streak reminder ({hours} jam sejak repost terakhir)
+⏰ Streak reminder ({days} hari sejak repost terakhir)
 
-Repost TikTok terakhir lo udah {hours} jam lalu. Repost satu video apa aja
+Repost TikTok terakhir lo udah {days} hari lalu. Repost satu video apa aja
 sekarang biar sistemnya tenang.
 
-Kalau emang sengaja break/hiatus, biarin aja — email ke pihak ketiga baru
-terkirim setelah {alert_hours} jam.
+Kalau emang sengaja break/hiatus, biarin aja — email ke temen accountability
+baru terkirim kalau sampai {alert_days} hari nggak ada repost.

@@ -7,8 +7,8 @@ biar ada yang nanya kabar.
 
 ```
 Repost terakhir: Hari 0
-Hari 1-2 → reminder Telegram ke diri sendiri (ulang tiap 12 jam)
-Hari 2+  → email ke temen accountability (ulang tiap 24 jam)
+Hari 7+  → reminder Telegram ke diri sendiri (ulang tiap 1 hari)
+Hari 30+ → email ke temen accountability (ulang tiap 2 hari)
 Repost lagi → reset otomatis + notif "all clear"
 ```
 
@@ -45,8 +45,9 @@ Push repo ini, lalu di **Settings → Secrets and variables → Actions**:
 
 **Variables:**
 - `TIKTOK_USERNAME` — username TikTok tanpa `@`
-- (opsional) `REMIND_AFTER_HOURS`, `ALERT_AFTER_HOURS` — kalau ritme repost
-  lebih longgar dari default 24/48 jam, mis. `48` dan `72`
+- (opsional) `REMIND_AFTER_HOURS`, `ALERT_AFTER_HOURS` (default 7 dan 30 hari),
+  plus `REMIND_EVERY_HOURS`, `ALERT_EVERY_HOURS` (default 24 dan 48) — buat
+  tune jeda & frekuensi tanpa ubah kode
 
 **Secrets:** `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `SMTP_HOST`,
 `SMTP_PORT`, `SMTP_USER`, `SMTP_APP_PASSWORD`, `EMAIL_FROM`,

@@ -60,6 +60,8 @@ jobs:
           # Threshold bisa di-tune via repo Variables (opsional):
           REMIND_AFTER_HOURS: ${{ vars.REMIND_AFTER_HOURS }}
           ALERT_AFTER_HOURS: ${{ vars.ALERT_AFTER_HOURS }}
+          REMIND_EVERY_HOURS: ${{ vars.REMIND_EVERY_HOURS }}
+          ALERT_EVERY_HOURS: ${{ vars.ALERT_EVERY_HOURS }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
