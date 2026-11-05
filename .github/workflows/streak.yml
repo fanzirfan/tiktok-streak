@@ -1,0 +1,85 @@
+name: repost streak
+
+on:
+  schedule:
+    # Tiap 6 jam, menit 17 (hindari jampang puncak -> delay cron lebih kecil)
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: >-
+          normal = jalan sesuai jadwal; probe = tes scrape saja;
+          dry_run = log keputusan tanpa kirim; force_remind / force_alert =
+          tes notifikasi
+        type: choice
+        default: normal
+        options:
+          - normal
+          - probe
+          - dry_run
+          - force_remind
+          - force_alert
+
+permissions:
+  contents: write
+
+concurrency:
+  group: streak
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps + browser
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Probe (tes scrape saja)
+        if: ${{ inputs.mode == 'probe' }}
+        run: python streak/probe.py "$TIKTOK_USERNAME"
+        env:
+          TIKTOK_USERNAME: ${{ vars.TIKTOK_USERNAME }}
+
+      - name: Cek streak
+        if: ${{ inputs.mode != 'probe' }}
+        run: python streak/check.py
+        env:
+          TIKTOK_USERNAME: ${{ vars.TIKTOK_USERNAME }}
+          # Threshold bisa di-tune via repo Variables (opsional):
+          REMIND_AFTER_HOURS: ${{ vars.REMIND_AFTER_HOURS }}
+          ALERT_AFTER_HOURS: ${{ vars.ALERT_AFTER_HOURS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
+          DRY_RUN: ${{ inputs.mode == 'dry_run' }}
+          FORCE_REMIND: ${{ inputs.mode == 'force_remind' }}
+          FORCE_ALERT: ${{ inputs.mode == 'force_alert' }}
+
+      - name: Simpan state + keepalive
+        # Commit state.json tiap run = aktivitas repo = workflow schedule
+        # nggak pernah dimatikan GitHub karena 60 hari "inactivity".
+        if: ${{ inputs.mode != 'probe' }}
+        run: |
+          git config user.name "streak-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -f state.json ] && git add state.json
+          git diff --cached --quiet || git commit -m "state update $(date -u '+%Y-%m-%dT%H:%MZ')"
+          git push
